@@ -124,4 +124,93 @@
 
 ---
 
+**02.Django Introduction**
 
+1.Framework - Работна рамка
+
+  - Следваме определени правила и структури.
+  - Получаваме готови функции
+
+2.MVT Pattern
+
+  - **Model View Template**
+
+3.Структура на Django проект
+
+  - manage.py - entry point-a за работа с Django, с него изпълняваме command-line операции
+  - projectFolder
+    - settings.py - съдържа настроките на приложението
+    - urls.py - място където дефинираме url-и, които да са достъпни от потребителя
+    - asgi.py - setup за асинхронни заявки
+    - wsgi.py - setup за синхронни заявки  
+ - djangoApp - всеки app се грижи за отделна част от нашия проект
+
+4.Creation of a django app
+  - Move app to project directory (Optional)
+  - Create ```urls.py``` file
+  - Register the djagoApp in ```settings.py```
+  - Register the urls in the project
+  - ```   python manage.py runserver```
+
+5.Databases
+
+  - За Postgres инсталираме psycopg2
+  - Конфигурираме в ```setting.py```
+  - Създаваме база
+  - Създаваме модели в ```models.py```
+  - ```makemigrations```
+  - ```migrate```
+
+6.Views
+
+  - Съдържат главната бизнес логика
+  - Function Based View (FBV)
+  - Трябват ни:
+    - Функция, която има един или повече параметри и връща отрговор
+      
+     ```
+     def index(request):
+           return HttpResponse("Hello world")
+
+     ```
+    
+    ```
+      HttpResponse("Hello world", headers={
+       "Content-Type": "application/json",
+    })
+
+7.urls
+
+  - Създаваме си променлива с име ```urlpatterns``` в app/urls.py
+  - В нея задаваме на какъв път, какво view да се изпълни
+    ```
+       from .views import index
+
+       urlpatterns = (
+          path('home/', index),
+       )
+
+ - Добавяме си app/urls в project/urls.py
+   ```
+       urlpatterns = (  
+       path('admin/', admin.site.urls),
+       path('', include('project_name.app_name.urls')),  
+    )
+
+8.Admin Panel
+
+  - Django пакет
+  - Започнат като third-party пакет и в последствие добавен като официален пакет
+  - /admin/ - за да достъпим админ панела
+  - ```createsuperuser```
+  - admin.py - регистрираме моделите, които искаме да могат да се манипулират в админа
+
+9.Django Template Language (DTL)
+
+  - Като динамичен HTML
+  - Имаме цикли, ифове
+  - Можем да рендерираме наши стойности
+  - ```{{ }}``` - интерполация
+  - ```{% %}``` - template tags
+
+---
