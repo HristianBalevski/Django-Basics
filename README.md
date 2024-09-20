@@ -332,7 +332,6 @@ article =  get_object_or_404(Article, pk=article_id)
   - Има други алтернативи като ```Jinja2```
   - Mожем да рендредираме в html, txt, xml и тн.
   - С него правим Sever Side Rendering(SSR).
-  - 
   - Настройките по подразбиране за DTL можем да намерим в ```settings.py```
 
     ```
