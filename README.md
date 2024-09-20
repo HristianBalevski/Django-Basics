@@ -214,3 +214,245 @@
   - ```{% %}``` - template tags
 
 ---
+
+## 03. Urls and Views
+
+1.Какво са url-ите в Django?
+
+  - Всеки url преставлява път, на който зареждаме дадено view
+  - Django ги проверява последователно за съвпадение
+    ```
+      urlpatterns = [
+        path('index/', index_view),
+        path('index/', index_view_2)  # никога няма да видим index_view_2
+      ]
+  - В основните urls на проекта ни, трябва да включим тези от всяко наше приложение
+  - Можем да сложим общ prefix, който да седи пред всеки url на даден app
+    ```
+     urlpatterns = [
+       path('admin/', admin.site.urls),
+       path('departments/', include('departments.urls')),
+     ]
+  - include може да приема списък от paths
+
+2.Динамични url-и
+
+  - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id)
+    ```
+        path('index/<int:pk> ', index_view),
+  - Типове динамични url-и
+    - str
+    - int
+    - slug - string, който не може да има интервали и non-Ascii символи
+    - path - "/some/path" - не бихме имали съвпадение в str, защото Django вижда това като отделни пътища
+    - uuid
+ - re_path
+   - Винаги пишем в raw стринг(стринг, който няма escapes)
+   - В django 2 всеки път е бил с регулярни изрази
+     ```
+         re_path(r'^article/(?P<year>[0-9]{4})/', view)
+         # matches year and saves it in a variable year
+
+3.Views
+
+  - Function Based Views
+    - Приемат http заявка и връщат http отговор(или негов наследник)
+    - Освен заявката, могат да получават и други параметри заложени в url-a
+
+4.Response types
+
+  - HttpResponse
+    - Обект, който се грижи за това да се сериализира нашият отговор (да се разбие на пакети и тн.)
+    - Можем да му подаваме content (съдържание)
+    - Можем да му подадем status_code
+        ```
+           return HttpResponse(content="Hi my name is", status=201)
+        
+ - JsonResponse
+   ```
+      content = json.dumps({
+         "name": "Dido",
+         "age": 20
+    })
+    
+    return HttpResponse(content=content, content_type="application/json")
+    # or
+    return JsonResponse(content,)
+
+5.Django Shortcuts
+
+  - **render**
+    - Рендерира контекст в html template
+      ```
+         return render(request, 'core/index.html', context)  # context is optional
+
+  - **redirect**
+    - Пренасочва ни към друг url
+    - Може да бъде permanent
+      - Когато искаме винаги от тази страница да се пренасочва към друга
+  ```
+   redirect('https://softuni.bg')  # използваме абсолютен url. защото редиректваме към друго приложение
+   redirect('my_view_name', pk=10)  # използваме име на view-то, за по-добра абстракция
+  ```
+
+ - **resolve_url**
+   - Използва url resolver-a на django, за да намери url отговарящ на view или model (ако в модела има get_absolute_url)
+ - get_object_or_404()
+ - get_list_or_404()
+```
+article =  get_object_or_404(Article, pk=article_id)
+```
+- **reverse**
+  - Получава име на url, търси в регистрираните имена и връща url-а с това име
+- **reverse_lazy**
+  - Използва се за конфигурация
+  - Зарежда url-а, когато той съществува
+```
+   # settings.py
+   LOGIN_URL = reverse('index') # throws an error
+   LOGIN_URL = reverse_lazy('index') # throws an error
+```
+
+6.Django Errors
+
+  - raise Http404
+  - return HttpResponseNotFound
+  - Постигат един и същ резултат
+  - Можем да персонализираме 404 страницата като направум темплейт с име ```404.html```
+
+---
+
+## 04.Template Basics
+
+1.Django Template Language(DTL)
+
+  - Използваме, за да рендерираме информацията от view-тата.
+  - Позволява ни да пишем html, който в зависимост от данните да бъде различен.
+  - Единствените езици, които Django поддържа out of the box DTL и Jinja2.
+  - Има други алтернативи като ```Jinja2```
+  - Mожем да рендредираме в html, txt, xml и тн.
+  - С него правим Sever Side Rendering(SSR).
+  - Настройките по подразбиране за DTL можем да намерим в ```settings.py```
+
+    ```
+       TEMPLATES = [
+          {
+              'BACKEND': 'django.template.backends.django.DjangoTemplates',
+              'DIRS': [BASE_DIR / 'templates']
+              ,
+              'APP_DIRS': True,
+              'OPTIONS': {
+                  'context_processors': [
+                      'django.template.context_processors.debug',
+                      'django.template.context_processors.request',
+                      'django.contrib.auth.context_processors.auth',
+                      'django.contrib.messages.context_processors.messages',
+                  ],
+              },
+          },
+      ]
+    ```
+
+2.Променливи
+
+  - Попълваме от контекста в ```{{ }}```
+  - Имената на променливите трябва да бъдат snake_case само букви и цифри
+  - Достъпване на методи, пропъртита и индекси става чрез .
+  - {{ my_list.1 }}, {{ person.full_name }}, {{ my_object.items }}
+
+```
+  context = {
+    "person": {
+        "name": "Dido",
+        "age": 20,
+    },
+    "person2": Person(name="Ivan", age=21),
+}
+```
+
+3.Филтри
+
+  - Използваме, за да преобразуваме нашите данни в темплейта.
+  - Използваме със символа ```|```
+  - Някои филтри имат параметри като тях подаваме с ```:```
+  - Някои built-in филтри
+    - truncatechars:number - маха последните number chars и ги заменя с ...
+    - truncatewords:number
+    - join:seprarator - същото като ''.join(separator) в Python.
+    - date:format - форматира датата по желан от нас начин.
+    - default:value - какво да се покаже при falsy стойност.
+    - add:value - добавя към съществуваща стойност.
+    - capfirst - прави първата буква главна.
+  - Линк към всички филтри в Django -> [Django Tmplate Filters](https://docs.djangoproject.com/en/5.0/ref/templates/builtins/)
+
+4.Тагове
+
+  - Цикли, проверки и други built-in действия.
+  - Таговете, които рендерират html имат затварящи тагове, защото html не зачита whitespace.
+  - url tag - позволява ни да не използваме hardcoded urls
+  - csrf_token - генерира произволен стринг на бак енд-а, рендерира го във фронт-енд-а и го сравнява, когато направим заявка, също запазва cookie.
+```
+1.Условни оператори (if, elif, else):
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+{% elif user.is_staff %}
+    <p>Welcome, staff member!</p>
+{% else %}
+    <p>Welcome, guest! Please log in.</p>
+{% endif %}
+
+Това е коректен пример за условни проверки в Django шаблони.
+Проверките се извършват в съответствие с логическите условия за обекта user.
+
+2.Проверка за празен URL:
+
+{% if url %}
+    <a href="{{ url }}">Visit this link</a>
+{% else %}
+    <p>No URL provided.</p>
+{% endif %}
+
+Тук се проверява дали променливата url съдържа стойност и се създава линк към нея.
+Ако не е предоставен URL, се показва съобщение.
+
+3.Пример с cycle:
+
+<ul>
+    {% for item in items %}
+        <li class="{% cycle 'row1' 'row2' %}">{{ item }}</li>
+    {% endfor %}
+</ul>
+
+Функцията cycle се използва за редуване на CSS класове (в случая 'row1' и 'row2') при всяка итерация на елементите в списъка items.
+Това е удобен начин за създаване на редуващи се стилове.
+
+4.Пример с lorem:
+
+<p>{% lorem 3 p %}</p>
+
+Този шаблонен таг генерира три абзаца с фиктивен текст ("Lorem ipsum").
+Може да се използва за запълване на място по време на разработка.
+```
+
+5.Static Files
+
+  - Ресурси, които се зареждат за всеки потребител.
+  - Снимки, видеа, икони.
+  - SetUp
+```
+   STATIC_URL = "static/"  # BASE URL - място от където достъпваме статичните ресурси
+   STATICFILESDIRS = (
+        BASE_DIR / 'staticfiles',  # create a folder staticfiles, usually on the level of manage. py
+   )  # The place on the filesystem where staticfiles are
+```
+  - https://localhost:8000/static/file.css - достъпваме файл
+  - {% static 'PATH/TO/FILE' %} - static тага, заменя STATIC_URL, по този начин, ако той бъде сменен, няма да се налага да го променяме навсякъде.
+  - В началото на темплейта добавяме ```{% load static %}```, което зарежда статичните файлове.
+  - При деплоймънт, django не предоставя статичните файлове, защото пускаме приложението си с gunicorn, който също не се грижи за статичните файлове.
+  - Тогава ни трябва още една настройка.
+```   STATIC_ROOT = BASE_DIR / 'staticfiles_compiled'```
+  - Изпълняваме командата ```collectstatic```, която взима статичните файлове от всички наши и чужди приложения и ги слага на STATIC_ROOT пътя.
+
+---
+    
