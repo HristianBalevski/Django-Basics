@@ -1,3 +1,7 @@
+[Click here for more infromation about the course](https://softuni.bg/trainings/4713/django-basics-september-2024)
+
+![Django Basics](https://github.com/user-attachments/assets/5be0e970-454b-4619-85a4-cdc4df63cbbd)
+
 # Plans
 
 **01.Internet and HTTP**
