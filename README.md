@@ -460,3 +460,129 @@ article =  get_object_or_404(Article, pk=article_id)
 
 ---
     
+## 05.Forms Basics
+
+1.Какво са формите
+
+  - Уеб формата е страница, която позволява на потребителите да въвеждат данни, които след това се изпращат на сървъра за обработка.
+  - В HTML, формите се намират вътре във <form> таг и използват методи като GET и POST за изпращане на данни.
+
+2.Форми в Django
+
+  - Django предлага библиотека за работа с форми чрез Python код. Това улеснява създаването и управлението на форми.
+  - Полетата във формите на Django съответстват на HTML <input> елементи. Например, за да създадеш поле за име:
+  - Създаваме ги във ```forms.py```
+    
+    ```from django import forms
+       class EmployeeForm(forms.Form):
+            first_name = forms.CharField(
+            max_length=35,
+            required=True,
+       )
+   - В темплейта
+     ```
+         <form action="{% url 'index' %}" method="post" >
+            {{ employee_form }}
+            {% csrf_token %}
+            <button>Send</button>
+         </form>
+     
+   - Във view-то
+     ```   def index(request):
+              if request.method == "GET":
+                 context = {
+                    "employee_form": EmployeeForm,
+                 }
+        
+                 return render(request, "web/index.html", context)
+              else:
+                 print(request.POST)  # get the data but without any validation
+                 form = EmployeeForm(request.POST)
+        
+                 if form.is_valid(): # starts validation process returns boolean
+                    print(form.cleaned_data["first_name"])
+                    return redirect('index')
+                 else:
+                    context = {
+                       "employee_form": form,  # подаваме формата с грешките в нея
+                    }
+        
+                    return render(reques t, "web/index.html", context)
+
+3.Django Form Class
+
+   -  Този клас има няколко важни функции:
+       - Определя какви полета ще има формата.
+       - Валидира данните, които потребителят въвежда.
+       - Определя външния вид и поведението на формата.
+
+   **Как се обработват формите в Django?**
+
+   Когато потребителят изпрати данни, Django ги проверява дали са валидни. Ако са, продължаваш с обработката на данните.
+   
+   Примерен код за обработка на форма:
+
+   ```def add_new_name(request):
+        if request.method == "POST":
+            form = NameForm(request.POST)
+            if form.is_valid():
+                # тук обработваш данните
+                pass
+        else:
+            form = NameForm()
+    
+        return render(request, 'index.html', {'form': form})
+   ```
+Това означава, че ако заявката е POST (когато потребителят е натиснал "Изпрати"), се създава форма с въведените данни, проверява се тяхната валидност, и ако всичко е наред, се обработват данните.
+
+**Полета във формите**
+
+Ключовата част при създаването на форма е да се дефинират правилно полетата, например:
+
+  - ```CharField``` – за текстови полета.
+  - ```BooleanField``` – за чекбоксове.
+  - ```ChoiceField``` – за избор от няколко опции (напр. радиобутони или падащо меню).
+
+Към всяко поле можеш да добавиш допълнителни аргументи като:
+
+  - ```label``` – за задаване на име на полето, което ще се вижда от потребителите.
+  - ```required``` – дали полето е задължително.
+  - ```help_text``` – малък текст, който пояснява какво трябва да въведе потребителят.
+  
+4.Django Widgets
+
+В Django, widgets са елементи, които контролират как изглежда и се държи едно поле във формата.
+
+Например:
+
+- ```TextInput``` – стандартно текстово поле.
+- ```Textarea``` – по-голямо текстово поле.
+- ```EmailInput``` – поле за имейл адреси.
+- За всяко поле на форма може да бъде зададен специфичен widget:
+  
+   ```comment = forms.CharField(widget=forms.Textarea)```
+
+5.Django ModelForm Class
+
+- Когато ти формата съответства на модел (например при регистрация на потребител), можеш да използваш ModelForm, за да избегнеш дублиране на дефиниции.
+- Това автоматично генерира форма, базирана на модела:
+
+  ```
+  from django import forms
+  from .models import Name
+
+  class NameForm(forms.ModelForm):
+     class Meta:
+        model = Name
+        fields = '__all__'
+  ```
+
+- В ModelForm има вътрешен клас ```Meta```, който задава опциите за поведението на формата (например кои полета от модела да се включат или изключат).
+
+  ```
+    class Meta:
+      model = Name
+      fields = ['first_name', 'last_name']
+  ```
+
+Формите в Django са мощен инструмент, който ти помага да взаимодействат потребителите с приложението. Те са лесни за настройка и предоставят богата функционалност, която прави процеса на събиране и валидиране на данни много по-удобен.
