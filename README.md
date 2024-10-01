@@ -590,30 +590,135 @@ article =  get_object_or_404(Article, pk=article_id)
 
 ## Templates Advanced
 
-**1. Template Inheritance**
+**1.Template Inheritance**
 
-Наследяването на шаблони ви позволява да изградите базов „скелет“ шаблон, който съдържа всички общи елементи на вашия сайт и дефинира блокове, които дъщерните шаблони могат да презапишат.
+Наследяването на шаблони в Django позволява създаването на основен шаблон (например ```base.html```), който може да съдържа общи елементи като заглавие, меню и футър. След това, други шаблони могат да наследяват този основен шаблон и да добавят свои специфични части.
 
-Пример:
-```<!DOCTYPE html>
-   <html lang="en">
-   <head>
-       <link rel="stylesheet" href="style.css">
-       <title>{% block title %}My amazing site{% endblock %}</title>
-   </head>
-   
-   <body>
-       <div id="sidebar">
-           {% block sidebar %}
-           <ul>
-               <li><a href="/">Home</a></li>
-               <li><a href="/blog/">Blog</a></li>
-           </ul>
-           {% endblock %}
-       </div>
-   
-       <div id="content">
-           {% block content %}{% endblock %}
-       </div>
-   </body>
-   </html>
+**Пример:**
+```
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+        <p>Това е основното съдържание по подразбиране.</p>
+    {% endblock %}
+</body>
+</html>
+ ```
+```
+<!-- child.html -->
+{% extends "base.html" %}
+
+{% block title %}Начална Страница{% endblock %}
+
+{% block content %}
+    <h1>Добре дошли!</h1>
+    <p>Това е специфичното съдържание за началната страница.</p>
+{% endblock %}
+```
+Template Snippets
+
+Можем да включваме части от други шаблони с ```{% include %}```. Това е полезно за многократно използване на елементи като менюта или футъри.
+
+**Пример:**
+```
+<!-- nav-bar.html -->
+<nav>
+    <ul>
+        <li><a href="/">Начало</a></li>
+        <li><a href="/about">За нас</a></li>
+    </ul>
+</nav>
+```
+```<!-- main.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    {% include "nav-bar.html" %}
+    <p>Добре дошли на главната страница!</p>
+{% endblock %}
+```
+**2.Custom Tags**
+
+Django позволява създаването на персонализирани тагове за сложна логика в шаблоните.
+Използват се два основни метода:
+
+  - **simple_tag**: Връща стойност като низ.
+  - **inclusion_tag**: Връща рендериран шаблон.
+
+**Пример за simple_tag:**
+
+```
+  # templatetags/my_tag.py
+  from django import template
+  
+  register = template.Library()
+  
+  @register.simple_tag
+  def greeting(name):
+      return f"Здравей, {name}!"
+```
+
+В шаблона:
+```
+{% load my_tag %}
+<p>{% greeting "Иван" %}</p>
+```
+
+**3.Custom Filters**
+
+Можем да създаваме потребителски филтри, които да обработват данни в шаблоните.
+
+**Пример:**
+```
+# templatetags/my_filter.py
+from django import template
+
+register = template.Library()
+
+@register.filter
+def odd(value):
+    return value % 2 != 0
+```
+
+В шаблона:
+```
+{% load my_filter %}
+{% if 3|odd %}
+    <p>Числото 3 е нечетно!</p>
+{% endif %}
+```
+
+**4.Bootstrap**
+
+За създаване на лесни за използване и responsive интерфейси, Django шаблоните могат да се комбинират с **Bootstrap**. Това включва използването на предварително дефинирани CSS класове.
+
+**Пример за Bootstrap меню:**
+```
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Лого</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Начало</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">За нас</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+```
+
+**Заключение**
+
+  - **Template Inheritance** позволява повторно използване на общи елементи.
+  - **Template Snippets** улеснява включването на многократни компоненти.
+  - **Custom Tags and Filters** осигуряват гъвкавост при работа с шаблони.
+  - **Bootstrap** е мощен инструмент за създаване на красиви и responsive уеб страници.
