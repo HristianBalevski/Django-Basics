@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Eoraptor</h1>
+
+<p>
+  Eoraptor was one of the earliest dinosaurs and its name 
+  is based on the Greek word for "dawn".
+
+  {% comment %} Eoraptor was a small dinosaur, with the known specimens measuring 1.2–1.3 m (3.9–4.3 ft) in length,[4]
+   and weighing around or less than 10 kg (22 lb). {% endcomment %}
+
+</p>
+
+<p>
+  Some other popular dinosaurs were:
+
+  <ul>
+    {% for dino in dinosaurs %}
+      <li> {{dino|lower}} </li>
+        {% comment %} Rendered once for each item in the dinosaurs list. Each value gets put inside HTML <li> tags. 
+        Note the lower filter used with the value. Filters get applied to a value through the pipe (|) symbol. 
+        Filters use a value and then modify the rendered result. 
+        The lower filter is similar to the .lower() method in Python, rendering the value as lowercase. {% endcomment %}
+    {% endfor %}
+  </ul>
+</p>
+
+{% endblock content %}

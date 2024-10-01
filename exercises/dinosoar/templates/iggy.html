@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<h1>Iguanodon</h1>
+
+<p>
+  Iguanodon (iguana-tooth) were large herbivores. They weighed 
+  {{3080|intcomma}}kg ({{6800|intcomma}}lbs).
+    {% comment %} intcomma - converts a number into a string with a comma every three digits. {% endcomment %}
+  Wow, {{3080000|intword}} grams is a lot!
+    {% comment %} intword - converts large numbers into their English equivalent. {% endcomment %}
+
+</p>
+
+{% endblock content %}
