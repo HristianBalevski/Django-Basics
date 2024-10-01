@@ -648,8 +648,8 @@ Template Snippets
 Django позволява създаването на персонализирани тагове за сложна логика в шаблоните.
 Използват се два основни метода:
 
-  - **simple_tag**: Връща стойност като низ.
-  - **inclusion_tag**: Връща рендериран шаблон.
+  - **simple_tag**: Връща стринг.
+  - **inclusion_tag**: Връща html стринг базаиран на темплейт.
 
 **Пример за simple_tag:**
 
@@ -670,6 +670,40 @@ Django позволява създаването на персонализира
 <p>{% greeting "Иван" %}</p>
 ```
 
+**Пример за inclusion_tag:**
+
+```
+# my_tags.py
+from django import template
+from your_app.models import Article
+
+register = template.Library()
+
+@register.inclusion_tag('latest_articles.html')
+def show_latest_articles(count=5):
+  latest_articles = Article.objects.order_by('-published_date')[:count]
+  return {'latest_articles': latest_articles}
+
+```
+
+- Тук, ```show_latest_articles``` е функцията, която ще бъде използвана в шаблона като таг.
+- Тя извлича последните 5 статии (или броя, който е указан) от модела ```Article```.
+- Рендерира шаблона ```latest_articles.html``` и му предава контекст с ключ ```latest_articles```.
+
+В шаблона:
+```
+<!-- latest_articles.html -->
+<ul>
+    {% for article in latest_articles %}
+        <li>
+            <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+            <small>({{ article.published_date }})</small>
+        </li>
+    {% empty %}
+        <li>Няма налични статии.</li>
+    {% endfor %}
+</ul>
+```
 **3.Custom Filters**
 
 Можем да създаваме потребителски филтри, които да обработват данни в шаблоните.
