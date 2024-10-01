@@ -2,11 +2,9 @@
 
 ![Django Basics](https://github.com/user-attachments/assets/5be0e970-454b-4619-85a4-cdc4df63cbbd)
 
-# Plans
-
 **01.Internet and HTTP**
 
- 1.Какво е интернет
+ **1.Какво е интернет**
  
  - Една голяма мрежа от устройства
  - Пример:
@@ -36,7 +34,7 @@
   - Физически интерфейси: en0, en1, en2, en3, en4, en5, en6
   - Виртуални интерфейси: lo0, bridge0, utun0, utun1, utun2, utun3, awdl0
 
-2.Request/Response - Client/Server
+**2.Request/Response - Client/Server**
 
 - Ние искаме някакъв ресурс и ако имаме достъп го взимаме
 - Клиента е всяко приложение, което може да достъпи сървър
@@ -45,7 +43,7 @@
   curl https://softuni.bg/
 ```
 
-3.Network Protocol
+**3.Network Protocol**
 
   - Стандарт, чрез който могат да комуникират 2 устройства
   - Правилата, които трябва да бъдат изпълнени, така че сървъра да може да разбере какво иска клиента, и когато върне резултат клиента да може да го разбере.
@@ -64,14 +62,14 @@
     - IP:
       - Протокол за адресиране и маршрутизация на данни в мрежи, който осигурява изпращането и получаването на пакети между устройства.
  
- 4.Пакети
+ **4.Пакети**
  
    - Когато сървъра и клиента си обменят данни, те ги обменят на пакети
    - Ако имаме твърде голям обем от данни те ще бъдат разделени на малки части (пакети).
    - Клиента ще раздроби данните на пакети, когато ги подава на сървъра. Той от своя страна ще ги сглоби и обратното.
    - Протокола е начина, по който, сървъра и клиента разбират как да обработват пакетите.
 
-5.IP адрес
+**5.IP адрес**
 
   - Уникален идентификатор в локалната мрежа
   - В една мрежа всички IP-та трябва да са уникални
@@ -79,7 +77,7 @@
   - Ако ние сме свързали няколко устройства в една мрежа, те могат да излизат под едно IP за външия свят, но вътре в самата мрежа те имат различни IP адреси
   - [What is my IP?](https://whatismyipaddress.com/)
 
-6.IPv4 vs IPv6
+**6.IPv4 vs IPv6**
 
   - v4 позволява създаването на 4.3 милиарда уникални адреса
     - 32-битови адреси
@@ -91,12 +89,12 @@
   - v6 позволява създаването на 3.4×10^38 уникални адреса
     - 128-битови адреси
 
-7.DNS - Domain Name System
+**7.DNS - Domain Name System**
 
   - Грижи се да можем да достъпваме сайтове през домейн(име), а не през IP
   - IP-то се сменя, затова не можем да караме потребителте да го помнят
 
-8.HTTP
+**8.HTTP**
 
   - Винаги получаваме резултат
   - Протокола на интернет
@@ -109,7 +107,7 @@
     - ...
   - [Status Code](https://http.cat/)
 
-9.URL (Uniform Resource Locator)
+**9.URL (Uniform Resource Locator)**
   
   - Подобно на адресите в реалния свят имаме: държава, град, квартал...
   - [http://localhost:8080/demo/html?id=26&lang=en#lecture](http://localhost:8080/demo/html?id=26&lang=en#lecture)
@@ -122,7 +120,7 @@
   - [https://softuni.bg:443](https://softuni.bg:443) - можем да си спестим порта, защото https се заржда на 443 по подразбиране.
   - Можем да имаме url-и на кирилица
 
-10.MIME (Multi-purpose Internet Mail Extensions)
+**10.MIME (Multi-purpose Internet Mail Extensions)**
 
   - Обяснява типа на данните, които се изпращат и получават
 
@@ -130,16 +128,16 @@
 
 **02.Django Introduction**
 
-1.Framework - Работна рамка
+**1.Framework - Работна рамка**
 
   - Следваме определени правила и структури.
   - Получаваме готови функции
 
-2.MVT Pattern
+**2.MVT Pattern**
 
   - **Model View Template**
 
-3.Структура на Django проект
+**3.Структура на Django проект**
 
   - manage.py - entry point-a за работа с Django, с него изпълняваме command-line операции
   - projectFolder
@@ -149,14 +147,15 @@
     - wsgi.py - setup за синхронни заявки  
  - djangoApp - всеки app се грижи за отделна част от нашия проект
 
-4.Creation of a django app
+**4.Creation of a django app**
+
   - Move app to project directory (Optional)
   - Create ```urls.py``` file
   - Register the djagoApp in ```settings.py```
   - Register the urls in the project
   - ```   python manage.py runserver```
 
-5.Databases
+**5.Databases**
 
   - За Postgres инсталираме psycopg2
   - Конфигурираме в ```setting.py```
@@ -165,7 +164,7 @@
   - ```makemigrations```
   - ```migrate```
 
-6.Views
+**6.Views**
 
   - Съдържат главната бизнес логика
   - Function Based View (FBV)
@@ -183,7 +182,7 @@
        "Content-Type": "application/json",
     })
 
-7.urls
+**7.urls**
 
   - Създаваме си променлива с име ```urlpatterns``` в app/urls.py
   - В нея задаваме на какъв път, какво view да се изпълни
@@ -201,7 +200,7 @@
        path('', include('project_name.app_name.urls')),  
     )
 
-8.Admin Panel
+**8.Admin Panel**
 
   - Django пакет
   - Започнат като third-party пакет и в последствие добавен като официален пакет
@@ -209,7 +208,7 @@
   - ```createsuperuser```
   - admin.py - регистрираме моделите, които искаме да могат да се манипулират в админа
 
-9.Django Template Language (DTL)
+**9.Django Template Language (DTL)**
 
   - Като динамичен HTML
   - Имаме цикли, ифове
@@ -221,7 +220,7 @@
 
 ## 03. Urls and Views
 
-1.Какво са url-ите в Django?
+**1.Какво са url-ите в Django?**
 
   - Всеки url преставлява път, на който зареждаме дадено view
   - Django ги проверява последователно за съвпадение
@@ -239,7 +238,7 @@
      ]
   - include може да приема списък от paths
 
-2.Динамични url-и
+**2.Динамични url-и**
 
   - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id)
     ```
@@ -257,13 +256,13 @@
          re_path(r'^article/(?P<year>[0-9]{4})/', view)
          # matches year and saves it in a variable year
 
-3.Views
+**3.Views**
 
   - Function Based Views
     - Приемат http заявка и връщат http отговор(или негов наследник)
     - Освен заявката, могат да получават и други параметри заложени в url-a
 
-4.Response types
+**4.Response types**
 
   - HttpResponse
     - Обект, който се грижи за това да се сериализира нашият отговор (да се разбие на пакети и тн.)
@@ -283,7 +282,7 @@
     # or
     return JsonResponse(content,)
 
-5.Django Shortcuts
+**5.Django Shortcuts**
 
   - **render**
     - Рендерира контекст в html template
@@ -317,7 +316,7 @@ article =  get_object_or_404(Article, pk=article_id)
    LOGIN_URL = reverse_lazy('index') # throws an error
 ```
 
-6.Django Errors
+**6.Django Errors**
 
   - raise Http404
   - return HttpResponseNotFound
@@ -328,7 +327,7 @@ article =  get_object_or_404(Article, pk=article_id)
 
 ## 04.Template Basics
 
-1.Django Template Language(DTL)
+**1.Django Template Language(DTL)**
 
   - Използваме, за да рендерираме информацията от view-тата.
   - Позволява ни да пишем html, който в зависимост от данните да бъде различен.
@@ -357,7 +356,7 @@ article =  get_object_or_404(Article, pk=article_id)
       ]
     ```
 
-2.Променливи
+**2.Променливи**
 
   - Попълваме от контекста в ```{{ }}```
   - Имената на променливите трябва да бъдат snake_case само букви и цифри
@@ -374,7 +373,7 @@ article =  get_object_or_404(Article, pk=article_id)
 }
 ```
 
-3.Филтри
+**3.Филтри**
 
   - Използваме, за да преобразуваме нашите данни в темплейта.
   - Използваме със символа ```|```
@@ -389,14 +388,14 @@ article =  get_object_or_404(Article, pk=article_id)
     - capfirst - прави първата буква главна.
   - Линк към всички филтри в Django -> [Django Tmplate Filters](https://docs.djangoproject.com/en/5.0/ref/templates/builtins/)
 
-4.Тагове
+**4.Тагове**
 
   - Цикли, проверки и други built-in действия.
   - Таговете, които рендерират html имат затварящи тагове, защото html не зачита whitespace.
   - url tag - позволява ни да не използваме hardcoded urls
   - csrf_token - генерира произволен стринг на бак енд-а, рендерира го във фронт-енд-а и го сравнява, когато направим заявка, също запазва cookie.
 ```
-1.Условни оператори (if, elif, else):
+4.1.Условни оператори (if, elif, else):
 
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
@@ -409,7 +408,7 @@ article =  get_object_or_404(Article, pk=article_id)
 Това е коректен пример за условни проверки в Django шаблони.
 Проверките се извършват в съответствие с логическите условия за обекта user.
 
-2.Проверка за празен URL:
+4.2.Проверка за празен URL:
 
 {% if url %}
     <a href="{{ url }}">Visit this link</a>
@@ -420,7 +419,7 @@ article =  get_object_or_404(Article, pk=article_id)
 Тук се проверява дали променливата url съдържа стойност и се създава линк към нея.
 Ако не е предоставен URL, се показва съобщение.
 
-3.Пример с cycle:
+4.3.Пример с cycle:
 
 <ul>
     {% for item in items %}
@@ -431,7 +430,7 @@ article =  get_object_or_404(Article, pk=article_id)
 Функцията cycle се използва за редуване на CSS класове (в случая 'row1' и 'row2') при всяка итерация на елементите в списъка items.
 Това е удобен начин за създаване на редуващи се стилове.
 
-4.Пример с lorem:
+4.4.Пример с lorem:
 
 <p>{% lorem 3 p %}</p>
 
@@ -439,7 +438,7 @@ article =  get_object_or_404(Article, pk=article_id)
 Може да се използва за запълване на място по време на разработка.
 ```
 
-5.Static Files
+**5.Static Files**
 
   - Ресурси, които се зареждат за всеки потребител.
   - Снимки, видеа, икони.
@@ -462,12 +461,12 @@ article =  get_object_or_404(Article, pk=article_id)
     
 ## 05.Forms Basics
 
-1.Какво са формите
+**1.Какво са формите**
 
   - Уеб формата е страница, която позволява на потребителите да въвеждат данни, които след това се изпращат на сървъра за обработка.
   - В HTML, формите се намират вътре във <form> таг и използват методи като GET и POST за изпращане на данни.
 
-2.Форми в Django
+**2.Форми в Django**
 
   - Django предлага библиотека за работа с форми чрез Python код. Това улеснява създаването и управлението на форми.
   - Полетата във формите на Django съответстват на HTML <input> елементи. Например, за да създадеш поле за име:
@@ -509,7 +508,7 @@ article =  get_object_or_404(Article, pk=article_id)
         
                     return render(reques t, "web/index.html", context)
 
-3.Django Form Class
+**3.Django Form Class**
 
    -  Този клас има няколко важни функции:
        - Определя какви полета ще има формата.
@@ -549,7 +548,7 @@ article =  get_object_or_404(Article, pk=article_id)
   - ```required``` – дали полето е задължително.
   - ```help_text``` – малък текст, който пояснява какво трябва да въведе потребителят.
   
-4.Django Widgets
+**4.Django Widgets**
 
 В Django, widgets са елементи, които контролират как изглежда и се държи едно поле във формата.
 
@@ -562,7 +561,7 @@ article =  get_object_or_404(Article, pk=article_id)
   
    ```comment = forms.CharField(widget=forms.Textarea)```
 
-5.Django ModelForm Class
+**5.Django ModelForm Class**
 
 - Когато ти формата съответства на модел (например при регистрация на потребител), можеш да използваш ModelForm, за да избегнеш дублиране на дефиниции.
 - Това автоматично генерира форма, базирана на модела:
@@ -586,3 +585,35 @@ article =  get_object_or_404(Article, pk=article_id)
   ```
 
 Формите в Django са мощен инструмент, който ти помага да взаимодействат потребителите с приложението. Те предоставят богата функционалност, която прави процеса на събиране и валидиране на данни много по-удобен.
+
+---
+
+## Templates Advanced
+
+**1. Template Inheritance**
+
+Наследяването на шаблони ви позволява да изградите базов „скелет“ шаблон, който съдържа всички общи елементи на вашия сайт и дефинира блокове, които дъщерните шаблони могат да презапишат.
+
+Пример:
+```<!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <link rel="stylesheet" href="style.css">
+       <title>{% block title %}My amazing site{% endblock %}</title>
+   </head>
+   
+   <body>
+       <div id="sidebar">
+           {% block sidebar %}
+           <ul>
+               <li><a href="/">Home</a></li>
+               <li><a href="/blog/">Blog</a></li>
+           </ul>
+           {% endblock %}
+       </div>
+   
+       <div id="content">
+           {% block content %}{% endblock %}
+       </div>
+   </body>
+   </html>
