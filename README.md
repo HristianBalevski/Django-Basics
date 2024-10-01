@@ -588,7 +588,7 @@ article =  get_object_or_404(Article, pk=article_id)
 
 ---
 
-## Templates Advanced
+## 06.Templates Advanced
 
 **1.Template Inheritance**
 
