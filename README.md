@@ -721,4 +721,4 @@ def odd(value):
   - **Template Inheritance** позволява повторно използване на общи елементи.
   - **Template Snippets** улеснява включването на многократни компоненти.
   - **Custom Tags and Filters** осигуряват гъвкавост при работа с шаблони.
-  - **Bootstrap** е мощен инструмент за създаване на красиви и responsive уеб страници.
+  - **[Bootstrap](https://getbootstrap.com/)** е мощен инструмент за създаване на красиви и responsive уеб страници.
