@@ -1,6 +1,7 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.html import conditional_escape, mark_safe, escape
+import mistune
 
 register = template.Library()
 
@@ -144,3 +145,60 @@ def dino_list(context, title):
 
     context["weight"] = "20 tons"
     return mark_safe(output)
+
+
+@register.inclusion_tag("sublist.html")
+def include_list(iterator):
+    return {"iterator": iterator}
+
+
+"""
+If you’re writing a tag that uses a lot of HTML, using @inclusion_tag is a better way to keep the HTML separate from the code.
+"""
+
+
+@register.tag(name="markdown")
+def do_markdown(parser, token):
+    nodelist = parser.parse(("endmarkdown",))
+    parser.delete_first_token()
+    return MarkdownNode(nodelist)
+
+
+class MarkdownNode(template.Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def render(self, context):
+        content = self.nodelist.render(context)
+        result = mistune.markdown(str(content))
+        return result
+
+
+@register.tag()
+def shownodes(parser, token):
+    nodelist = parser.parse(("endshownodes",))
+    parser.delete_first_token()
+    return ShowNodesNode(token, nodelist)
+
+
+class ShowNodesNode(template.Node):
+    def __init__(self, token, nodelist):
+        self.token = token
+        self.nodelist = nodelist
+
+    def render(self, context):
+        result = [
+            "<ul><li>Token info:</li><ul>",
+        ]
+
+        for part in self.token.split_contents():
+            content = escape(str(part))
+            result.append(f"<li>{content}</li>")
+
+        result.append("</ul><li>Block contents:</li><ul>")
+        for node in self.nodelist:
+            content = escape(str(node))
+            result.append(f"<li>{content}</li>")
+
+        result.append("</ul>")
+        return "".join(result)
