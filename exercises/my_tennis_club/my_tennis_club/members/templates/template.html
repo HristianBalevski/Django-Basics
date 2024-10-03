@@ -1,5 +1,8 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'my_first_css.css' %}">
 <body>
 
 {% with first_name='Tobias' %}
@@ -119,5 +122,7 @@
 </table>
 
 <p>In views.py you can see how to import and fetch members from the database.</p>
+
+
 </body>
 </html>

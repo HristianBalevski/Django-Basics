@@ -1,0 +1,15 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'global.css' %}">
+    <title>Fruits</title>
+</head>
+<body>
+    {% for fruit in fruits %}
+    <h1>{{ fruit }}</h1>
+{% endfor %}
+</body>
+</html>

@@ -33,9 +33,18 @@ def testing(request):
     # Member.objects.values() or all(), Member.objects.values_list(), Member.objects.filter(first_name='Name').values()
     # Member.objects.filter(first_name='Emil').values() | Member.objects.filter(first_name='Tobias').values()
     # Member.objects.filter(last_name='Refsnes', id=2).values()
+    # Member.objects.filter(first_name__startswith='L')
 
-    my_members = Member.objects.filter(first_name__startswith='L')
+    my_members = Member.objects.all().order_by('last_name', '-id').values()
     context = {
         'my_members': my_members,
     }
     return render(request, 'template.html', context)
+
+
+def fruits(request):
+    context = {
+        'fruits': ['Apple', 'Banana', 'Cherry']
+    }
+
+    return render(request, 'fruits.html', context)
