@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "my_tennis_club.members.apps.MembersConfig"
+    "my_tennis_club.members.apps.MembersConfig",
+    'bootstrap5'
 ]
 
 MIDDLEWARE = [
