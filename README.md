@@ -756,3 +756,36 @@ def odd(value):
   - **Template Snippets** улеснява включването на многократни компоненти.
   - **Custom Tags and Filters** осигуряват гъвкавост при работа с шаблони.
   - **[Bootstrap](https://getbootstrap.com/)** е мощен инструмент за създаване на красиви и responsive уеб страници.
+
+---
+## Forms Advanced
+
+**1.Валидиране на форми в Django**
+
+- **Django Validators** - Валидаторът е функция или клас, който проверява дали дадена стойност отговаря на определени критерии. Ако стойността е валидна, не се връща нищо, иначе се вдига грешка ```ValidationError```.
+  
+   Пример:
+   ```
+   from django.core.exceptions import ValidationError
+   
+   def validate_value(value):
+       if value < 0:
+           raise ValidationError("Value cannot be negative")
+   ```
+- **Повторна употреба на валидатори**: Валидаторите могат да бъдат прилагани както върху модели, така и върху форми и ```ModelForms```.
+- **Формати за валидиране на форми**: Валидирането на форми се извършва по време на процеса на почистване на данните. Всяко поле на формата има специфична логика за валидиране. Можем да добавим допълнителни валидатори към полетата на формата:
+    ```
+    class NameForm(forms.Form):
+        name = forms.CharField(
+            validators=[validator_one, validator_two]
+        )
+    ```
+- **ModelForm Validation**: Валидацията може да се извършва както на ниво модел, така и на ниво форма.
+  ```
+  class NameForm(forms.Form):
+    name = forms.CharField(
+        error_messages={
+            'required': 'Моля, въведете име'
+        }
+    )
+  ```
