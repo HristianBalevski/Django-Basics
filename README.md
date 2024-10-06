@@ -2,7 +2,7 @@
 
 ![Django Basics](https://github.com/user-attachments/assets/5be0e970-454b-4619-85a4-cdc4df63cbbd)
 
-**01.Internet and HTTP**
+## 01.Internet and HTTP
 
  **1.Какво е интернет**
  
@@ -126,7 +126,7 @@
 
 ---
 
-**02.Django Introduction**
+## 02.Django Introduction
 
 **1.Framework - Работна рамка**
 
@@ -281,6 +281,7 @@
     return HttpResponse(content=content, content_type="application/json")
     # or
     return JsonResponse(content,)
+   ```
 
 **5.Django Shortcuts**
 
@@ -758,7 +759,7 @@ def odd(value):
   - **[Bootstrap](https://getbootstrap.com/)** е мощен инструмент за създаване на красиви и responsive уеб страници.
 
 ---
-## 7.Forms Advanced
+## 07.Forms Advanced
 
 **1.Валидиране на форми в Django**
 
