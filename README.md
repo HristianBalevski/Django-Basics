@@ -758,7 +758,7 @@ def odd(value):
   - **[Bootstrap](https://getbootstrap.com/)** е мощен инструмент за създаване на красиви и responsive уеб страници.
 
 ---
-## Forms Advanced
+## 7.Forms Advanced
 
 **1.Валидиране на форми в Django**
 
@@ -782,10 +782,153 @@ def odd(value):
     ```
 - **ModelForm Validation**: Валидацията може да се извършва както на ниво модел, така и на ниво форма.
   ```
-  class NameForm(forms.Form):
-    name = forms.CharField(
+  class Person(models.Model):
+    first_name = models.CharField(max_length=30, validators=[validate_value])
+  ```
+- **Съобщения за грешка**: Можем да персонализираме съобщенията за грешки както във формите, така и в моделите.
+  
+  Error messages in Form:
+   ```
+   class NameForm(forms.Form):
+   name = forms.CharField(
+       error_messages={
+           'required': 'Please enter your name'
+       }
+   )
+   ```
+   Error messages in Model:
+  ```
+  class UserName(models.Model):
+     username = models.CharField(
+        max_length=50,
+        unique=True,
         error_messages={
-            'required': 'Моля, въведете име'
-        }
-    )
+           "unique": "The name is already taken."
+        })
+  ```
+  Error Messages in ModelForms:
+  ```
+  class NameModelForm(forms.ModelForm):
+    class Meta:
+      ...
+      error_messages = {
+        'name': {
+        'max_length': "The name is too long."
+      }
+    }
+  ```
+**2.Form Class Methods**
+
+- ```__init__(self, *args, **kwargs)```: Този метод се използва за инициализация на формата и може да бъде презаписан за допълнителна настройка.
+  ```
+  class NameForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['readonly'] = True
+  ```
+- ```clean(self)```: Метод за цялостно валидиране на формата.
+  
+  ```
+  def clean(self):
+    cleaned_data = super().clean()
+    if cleaned_data.get('first_name') == cleaned_data.get('last_name'):
+        raise ValidationError("First and last name cannot be the same.")
+    return cleaned_data
+  ```
+- ```clean_<fieldname>(self)```: Метод за валидиране на специфично поле.
+  
+  ```
+  def clean_email(self):
+    email = self.cleaned_data.get('email')
+    if not email.endswith('@example.com'):
+        raise ValidationError("Email must be from '@example.com'")
+    return email
+  ```
+- ```is_valid(self)```: Проверява дали формата е валидна и връща ```True```, ако е.
+- ```save(self, commit=True)```: Запазва данните във формата, ако тя е ```ModelForm```.
+  
+  ```
+  form = MyModelForm(request.POST)
+  if form.is_valid():
+      form.save()
+  ```
+**3.Formsets**
+
+- Django предоставя клас **Formset** за работа с множество форми на една страница. Това позволява едновременно управление и обработка на няколко форми.
+  ```
+  from django.forms import modelformset_factory
+  PersonFormSet = modelformset_factory(Person, fields=('name', 'email'), extra=2)
+  ```
+- Използване във ```views.py```:
+
+  ```
+  def manage_people(request):
+    if request.method == 'POST':
+        formset = PersonFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = PersonFormSet()
+    return render(request, 'manage_people.html', {'formset': formset})
+  ```
+**4.Styling Forms**
+
+- **Стилизиране на форми**: Django предлага различни методи за представяне на форми - като параграфи, таблици, списъци и др.
+  ```
+  <form method="post">
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+  </form>
+  ```
+- **Bootstrap и Crispy Forms**: Използването на ```crispy_forms``` за добавяне на ```Bootstrap``` стилизиране.
+  ```
+  $ pip install crispy-bootstrap5
+  ```
+  Конфигурация в ```settings.py```:
+
+  ```
+  INSTALLED_APPS = (
+    ...
+    "crispy_forms",
+    "crispy_bootstrap5",
+    ...
+  )
+  
+  CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+  
+  CRISPY_TEMPLATE_PACK = "bootstrap5"
+  ```
+  Примерен код:
+
+  ```
+  from crispy_forms.helper import FormHelper
+
+  class ExampleForm(forms.Form):
+      def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.helper = FormHelper()
+          self.helper.form_class = 'form-horizontal'
+  ```
+**5.Working with Media Files**
+
+- **Медийни файлове**: Включват снимки, аудио, видео и други документи. Django предлага начини за обработка на тези файлове, включително работа с изображения чрез библиотеката Pillow.
+- **Инсталиране на Pillow**:
+
+  ```pip install pillow```
+- **Създаване на поле за изображения в модел**:
+
+  ```
+  class Person(models.Model):
+    image = models.ImageField(upload_to='images/')
+  ```
+- **Конфигурация на медийната папка в** ```settings.py```:
+
+  ```
+  MEDIA_URL = '/media/'
+  MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+  ```
+- **Пример за показване на изображение в шаблон**:
+
+  ```
+  <img src="{{ person.image.url }}" alt="Person Image">
   ```
