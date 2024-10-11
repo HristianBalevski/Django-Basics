@@ -2,7 +2,7 @@
 
 ![Django Basics](https://github.com/user-attachments/assets/5be0e970-454b-4619-85a4-cdc4df63cbbd)
 
-**01.Internet and HTTP**
+## 01.Internet and HTTP
 
  **1.Какво е интернет**
  
@@ -126,7 +126,7 @@
 
 ---
 
-**02.Django Introduction**
+## 02.Django Introduction
 
 **1.Framework - Работна рамка**
 
@@ -248,7 +248,7 @@
     - int
     - slug - string, който не може да има интервали и non-Ascii символи
     - path - "/some/path" - не бихме имали съвпадение в str, защото Django вижда това като отделни пътища
-    - uuid
+    - [UUID (Universally Unique Identifier)](https://www.uuidgenerator.net/) е 128-битов уникален идентификатор, използван за обозначаване на обекти по уникален начин в рамките на дадена система.
  - re_path
    - Винаги пишем в raw стринг(стринг, който няма escapes)
    - В django 2 всеки път е бил с регулярни изрази
@@ -281,6 +281,7 @@
     return HttpResponse(content=content, content_type="application/json")
     # or
     return JsonResponse(content,)
+   ```
 
 **5.Django Shortcuts**
 
@@ -321,7 +322,59 @@ article =  get_object_or_404(Article, pk=article_id)
   - raise Http404
   - return HttpResponseNotFound
   - Постигат един и същ резултат
-  - Можем да персонализираме 404 страницата като направум темплейт с име ```404.html```
+  - Можем да персонализираме 404 страницата като направим темплейт с име ```404.html```
+
+**7.Creating Slug**
+
+Добавянето на ```slug``` в проектите е добра практика, особено ако имаме модели с полета като ```name```, които трябва да се използват в URL адреси. Slug полетата са по-четливи за потребителя и по-оптимизирани за SEO, отколкото използването на идентификатори (IDs) в URL.
+  
+- **Използване на SlugField**: По-добре е да използвамe ```SlugField``` вместо ```CharField```, който е специално създаден за такива случаи. Той автоматично ограничава символите до валидни URL символи.
+- **Автоматично генериране на уникални "slugs"**: Ако има два записа с еднакво име, те ще получат един и същ slug, което ще наруши уникалността. Добре е да се добави логига за униканлни slugs.
+  ```
+  from django.db import models
+  from django.utils.text import slugify
+
+
+  class Department(models.Model):
+    name = models.CharField(
+        max_length=100,
+    )
+
+    slug = models.SlugField(
+        max_length=100,
+        unique=True,
+        blank=True,
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+            while Department.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"ID: {self.pk}, Name: {self.name}"
+  ```
+  Този метод е добра и надеждна практика за генериране на уникални slugs, но не е единственото решение.
+
+**Възможни подобрения на slug логиката**
+
+**1.Използване на библиотеки като** ```django-autoslug``` **или** ```django-extensions```: Тези библиотеки автоматизират много от процесите, свързани с slug-овете, и добавят функции за автоматично генериране и обновяване.
+
+**2.Сложни структури на данни**: Ако имаме по-сложна структура на модела (например когато slug-овете зависят от друг модел, като категория или потребител), може да трябва да адаптираме логиката, за да осигурим уникалност на slug-овете в рамките на дадена връзка.
+
+**3.SEO подобрения**: Можем да добавим и логика за ограничаване на дължината на slug-овете или да изключваме определени символи, които не са подходящи за URL, ако искаме да направим още по-оптимизирани URL адреси за SEO.
+
+**ВАЖНО Е ДА ЗАПОМНИМ**
+
+- **Slug не винаги е необходим**: Не във всеки модел slug е задължителен. Полезен е за модели, които се показват в URL адреси (например публикации в блогове, категории, продукти).
+- **Уникалност и оптимизация**: Винаги трябва да следим за уникалност на slug-овете и да избягваме проблеми с дублиране.
 
 ---
 
@@ -464,7 +517,7 @@ article =  get_object_or_404(Article, pk=article_id)
 **1.Какво са формите**
 
   - Уеб формата е страница, която позволява на потребителите да въвеждат данни, които след това се изпращат на сървъра за обработка.
-  - В HTML, формите се намират вътре във <form> таг и използват методи като GET и POST за изпращане на данни.
+  - В HTML, формите се намират вътре във ```<form>``` таг и използват методи като GET и POST за изпращане на данни.
 
 **2.Форми в Django**
 
@@ -563,7 +616,7 @@ article =  get_object_or_404(Article, pk=article_id)
 
 **5.Django ModelForm Class**
 
-- Когато ти формата съответства на модел (например при регистрация на потребител), можеш да използваш ModelForm, за да избегнеш дублиране на дефиниции.
+- Когато формата ти съответства на модел (например при регистрация на потребител), можеш да използваш ModelForm, за да избегнеш дублиране на дефиниции.
 - Това автоматично генерира форма, базирана на модела:
 
   ```
@@ -584,7 +637,7 @@ article =  get_object_or_404(Article, pk=article_id)
       fields = ['first_name', 'last_name']
   ```
 
-Формите в Django са мощен инструмент, който ти помага да взаимодействат потребителите с приложението. Те предоставят богата функционалност, която прави процеса на събиране и валидиране на данни много по-удобен.
+Формите в Django са полезен инструмент, който позволява на потребителите да взаимодействат с приложението. Те предоставят богата функционалност, която прави процеса на събиране и валидиране на данни много по-удобен.
 
 ---
 
@@ -756,3 +809,179 @@ def odd(value):
   - **Template Snippets** улеснява включването на многократни компоненти.
   - **Custom Tags and Filters** осигуряват гъвкавост при работа с шаблони.
   - **[Bootstrap](https://getbootstrap.com/)** е мощен инструмент за създаване на красиви и responsive уеб страници.
+
+---
+## 07.Forms Advanced
+
+**1.Валидиране на форми в Django**
+
+- **Django Validators** - Валидаторът е функция или клас, който проверява дали дадена стойност отговаря на определени критерии. Ако стойността е валидна, не се връща нищо, иначе се вдига грешка ```ValidationError```.
+  
+   Пример:
+   ```
+   from django.core.exceptions import ValidationError
+   
+   def validate_value(value):
+       if value < 0:
+           raise ValidationError("Value cannot be negative")
+   ```
+- **Повторна употреба на валидатори**: Валидаторите могат да бъдат прилагани както върху модели, така и върху форми и ```ModelForms```.
+- **Формати за валидиране на форми**: Валидирането на форми се извършва по време на процеса на почистване на данните. Всяко поле на формата има специфична логика за валидиране. Можем да добавим допълнителни валидатори към полетата на формата:
+    ```
+    class NameForm(forms.Form):
+        name = forms.CharField(
+            validators=[validator_one, validator_two]
+        )
+    ```
+- **ModelForm Validation**: Валидацията може да се извършва както на ниво модел, така и на ниво форма.
+  ```
+  class Person(models.Model):
+    first_name = models.CharField(max_length=30, validators=[validate_value])
+  ```
+- **Съобщения за грешка**: Можем да персонализираме съобщенията за грешки както във формите, така и в моделите.
+  
+  Error messages in Form:
+   ```
+   class NameForm(forms.Form):
+   name = forms.CharField(
+       error_messages={
+           'required': 'Please enter your name'
+       }
+   )
+   ```
+   Error messages in Model:
+  ```
+  class UserName(models.Model):
+     username = models.CharField(
+        max_length=50,
+        unique=True,
+        error_messages={
+           "unique": "The name is already taken."
+        })
+  ```
+  Error Messages in ModelForms:
+  ```
+  class NameModelForm(forms.ModelForm):
+    class Meta:
+      ...
+      error_messages = {
+        'name': {
+        'max_length': "The name is too long."
+      }
+    }
+  ```
+**2.Form Class Methods**
+
+- ```__init__(self, *args, **kwargs)```: Този метод се използва за инициализация на формата и може да бъде презаписан за допълнителна настройка.
+  ```
+  class NameForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['readonly'] = True
+  ```
+- ```clean(self)```: Метод за цялостно валидиране на формата.
+  
+  ```
+  def clean(self):
+    cleaned_data = super().clean()
+    if cleaned_data.get('first_name') == cleaned_data.get('last_name'):
+        raise ValidationError("First and last name cannot be the same.")
+    return cleaned_data
+  ```
+- ```clean_<fieldname>(self)```: Метод за валидиране на специфично поле.
+  
+  ```
+  def clean_email(self):
+    email = self.cleaned_data.get('email')
+    if not email.endswith('@example.com'):
+        raise ValidationError("Email must be from '@example.com'")
+    return email
+  ```
+- ```is_valid(self)```: Проверява дали формата е валидна и връща ```True```, ако е.
+- ```save(self, commit=True)```: Запазва данните във формата, ако тя е ```ModelForm```.
+  
+  ```
+  form = MyModelForm(request.POST)
+  if form.is_valid():
+      form.save()
+  ```
+**3.Formsets**
+
+- Django предоставя клас **Formset** за работа с множество форми на една страница. Това позволява едновременно управление и обработка на няколко форми.
+  ```
+  from django.forms import modelformset_factory
+  PersonFormSet = modelformset_factory(Person, fields=('name', 'email'), extra=2)
+  ```
+- Използване във ```views.py```:
+
+  ```
+  def manage_people(request):
+    if request.method == 'POST':
+        formset = PersonFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = PersonFormSet()
+    return render(request, 'manage_people.html', {'formset': formset})
+  ```
+**4.Styling Forms**
+
+- **Стилизиране на форми**: Django предлага различни методи за представяне на форми - като параграфи, таблици, списъци и др.
+  ```
+  <form method="post">
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+  </form>
+  ```
+- **Bootstrap и Crispy Forms**: Използването на ```crispy_forms``` за добавяне на ```Bootstrap``` стилизиране.
+  ```
+  $ pip install crispy-bootstrap5
+  ```
+  Конфигурация в ```settings.py```:
+
+  ```
+  INSTALLED_APPS = (
+    ...
+    "crispy_forms",
+    "crispy_bootstrap5",
+    ...
+  )
+  
+  CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+  
+  CRISPY_TEMPLATE_PACK = "bootstrap5"
+  ```
+  Примерен код:
+
+  ```
+  from crispy_forms.helper import FormHelper
+
+  class ExampleForm(forms.Form):
+      def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.helper = FormHelper()
+          self.helper.form_class = 'form-horizontal'
+  ```
+**5.Working with Media Files**
+
+- **Медийни файлове**: Включват снимки, аудио, видео и други документи. Django предлага начини за обработка на тези файлове, включително работа с изображения чрез библиотеката Pillow.
+- **Инсталиране на Pillow**:
+
+  ```pip install pillow```
+- **Създаване на поле за изображения в модел**:
+
+  ```
+  class Person(models.Model):
+    image = models.ImageField(upload_to='images/')
+  ```
+- **Конфигурация на медийната папка в** ```settings.py```:
+
+  ```
+  MEDIA_URL = '/media/'
+  MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+  ```
+- **Пример за показване на изображение в шаблон**:
+
+  ```
+  <img src="{{ person.image.url }}" alt="Person Image">
+  ```
