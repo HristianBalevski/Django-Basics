@@ -568,7 +568,7 @@ article =  get_object_or_404(Article, pk=article_id)
             {% csrf_token %}
             <button>Send</button>
          </form>
-     
+     ```
 
 **3.Django Form Class**
 
