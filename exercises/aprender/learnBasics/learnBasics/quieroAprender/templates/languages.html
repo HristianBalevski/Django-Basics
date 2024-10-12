@@ -14,6 +14,18 @@
 </head>
 <body>
 {% include 'navigation.html' %}
+    <div class="container">
+        <div class="posts">
+
+            {% for post in new_posts %}
+                <h3>{{ post.title }}</h3>
+                <div class="post">
+                <p>{{ post.content }}</p>
+                </div>
+                <h2>Posted by {{ post.author }} on {{ post.date_posted }}</h2>
+            {% endfor %}
+        </div>
+    </div>
     <h1>Learn new language with us!</h1>
     <div class="container">
         <div class="posts">
@@ -36,6 +48,7 @@
             {% endfor %}
         </div>
     </div>
+
 </body>
 <script src='https://unpkg.com/akar-icons-fonts'></script>
 </html>
