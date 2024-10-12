@@ -330,6 +330,7 @@ article =  get_object_or_404(Article, pk=article_id)
   
 - **Използване на SlugField**: По-добре е да използвамe ```SlugField``` вместо ```CharField```, който е специално създаден за такива случаи. Той автоматично ограничава символите до валидни URL символи.
 - **Автоматично генериране на уникални "slugs"**: Ако има два записа с еднакво име, те ще получат един и същ slug, което ще наруши уникалността. Добре е да се добави логига за униканлни slugs.
+  
   ```
   from django.db import models
   from django.utils.text import slugify
@@ -365,7 +366,7 @@ article =  get_object_or_404(Article, pk=article_id)
 
 **Възможни подобрения на slug логиката**
 
-**1.Използване на библиотеки като** ```django-autoslug``` **или** ```django-extensions```: Тези библиотеки автоматизират много от процесите, свързани с slug-овете, и добавят функции за автоматично генериране и обновяване.
+**1.Използване на библиотеки като** ```django-autoslug``` **или** ```django-extensions```: Тези библиотеки автоматизират много от процесите, свързани със slug-овете, и добавят функции за автоматично генериране и обновяване.
 
 **2.Сложни структури на данни**: Ако имаме по-сложна структура на модела (например когато slug-овете зависят от друг модел, като категория или потребител), може да трябва да адаптираме логиката, за да осигурим уникалност на slug-овете в рамките на дадена връзка.
 
@@ -447,9 +448,10 @@ article =  get_object_or_404(Article, pk=article_id)
   - Таговете, които рендерират html имат затварящи тагове, защото html не зачита whitespace.
   - url tag - позволява ни да не използваме hardcoded urls
   - csrf_token - генерира произволен стринг на бак енд-а, рендерира го във фронт-енд-а и го сравнява, когато направим заявка, също запазва cookie.
-```
+
 4.1.Условни оператори (if, elif, else):
 
+```
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
 {% elif user.is_staff %}
@@ -460,9 +462,11 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Това е коректен пример за условни проверки в Django шаблони.
 Проверките се извършват в съответствие с логическите условия за обекта user.
-
+```
+ 
 4.2.Проверка за празен URL:
 
+```
 {% if url %}
     <a href="{{ url }}">Visit this link</a>
 {% else %}
@@ -471,9 +475,11 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Тук се проверява дали променливата url съдържа стойност и се създава линк към нея.
 Ако не е предоставен URL, се показва съобщение.
-
+```
+ 
 4.3.Пример с cycle:
 
+```
 <ul>
     {% for item in items %}
         <li class="{% cycle 'row1' 'row2' %}">{{ item }}</li>
@@ -482,9 +488,10 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Функцията cycle се използва за редуване на CSS класове (в случая 'row1' и 'row2') при всяка итерация на елементите в списъка items.
 Това е удобен начин за създаване на редуващи се стилове.
-
+```
 4.4.Пример с lorem:
 
+```
 <p>{% lorem 3 p %}</p>
 
 Този шаблонен таг генерира три абзаца с фиктивен текст ("Lorem ipsum").
@@ -531,15 +538,8 @@ article =  get_object_or_404(Article, pk=article_id)
             max_length=35,
             required=True,
        )
-   - В темплейта
-     ```
-         <form action="{% url 'index' %}" method="post" >
-            {{ employee_form }}
-            {% csrf_token %}
-            <button>Send</button>
-         </form>
-     
-   - Във view-то
+    ```
+- Във view-то
      ```   def index(request):
               if request.method == "GET":
                  context = {
@@ -560,6 +560,15 @@ article =  get_object_or_404(Article, pk=article_id)
                     }
         
                     return render(reques t, "web/index.html", context)
+     ```
+- В темплейта
+     ```
+         <form action="{% url 'index' %}" method="post" >
+            {{ employee_form }}
+            {% csrf_token %}
+            <button>Send</button>
+         </form>
+     ```
 
 **3.Django Form Class**
 
