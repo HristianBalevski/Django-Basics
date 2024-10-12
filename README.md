@@ -531,15 +531,8 @@ article =  get_object_or_404(Article, pk=article_id)
             max_length=35,
             required=True,
        )
-   - В темплейта
-     ```
-         <form action="{% url 'index' %}" method="post" >
-            {{ employee_form }}
-            {% csrf_token %}
-            <button>Send</button>
-         </form>
-     
-   - Във view-то
+    ```
+- Във view-то
      ```   def index(request):
               if request.method == "GET":
                  context = {
@@ -560,6 +553,15 @@ article =  get_object_or_404(Article, pk=article_id)
                     }
         
                     return render(reques t, "web/index.html", context)
+     ```
+- В темплейта
+     ```
+         <form action="{% url 'index' %}" method="post" >
+            {{ employee_form }}
+            {% csrf_token %}
+            <button>Send</button>
+         </form>
+     
 
 **3.Django Form Class**
 
