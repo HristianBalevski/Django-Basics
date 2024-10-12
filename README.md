@@ -447,9 +447,10 @@ article =  get_object_or_404(Article, pk=article_id)
   - Таговете, които рендерират html имат затварящи тагове, защото html не зачита whitespace.
   - url tag - позволява ни да не използваме hardcoded urls
   - csrf_token - генерира произволен стринг на бак енд-а, рендерира го във фронт-енд-а и го сравнява, когато направим заявка, също запазва cookie.
-```
+
 4.1.Условни оператори (if, elif, else):
 
+```
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
 {% elif user.is_staff %}
@@ -460,9 +461,11 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Това е коректен пример за условни проверки в Django шаблони.
 Проверките се извършват в съответствие с логическите условия за обекта user.
-
+```
+ 
 4.2.Проверка за празен URL:
 
+```
 {% if url %}
     <a href="{{ url }}">Visit this link</a>
 {% else %}
@@ -471,9 +474,11 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Тук се проверява дали променливата url съдържа стойност и се създава линк към нея.
 Ако не е предоставен URL, се показва съобщение.
-
+```
+ 
 4.3.Пример с cycle:
 
+```
 <ul>
     {% for item in items %}
         <li class="{% cycle 'row1' 'row2' %}">{{ item }}</li>
@@ -482,9 +487,10 @@ article =  get_object_or_404(Article, pk=article_id)
 
 Функцията cycle се използва за редуване на CSS класове (в случая 'row1' и 'row2') при всяка итерация на елементите в списъка items.
 Това е удобен начин за създаване на редуващи се стилове.
-
+```
 4.4.Пример с lorem:
 
+```
 <p>{% lorem 3 p %}</p>
 
 Този шаблонен таг генерира три абзаца с фиктивен текст ("Lorem ipsum").
