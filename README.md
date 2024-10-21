@@ -1325,7 +1325,7 @@ class ArticleListView(RecentArticleMixin, ListView):
     template_name = 'list_articles.html'
 ```
 
-**Полезни CBV методи**
+**Полезни CBV методи:**
 
 - get()
   - Описание: Този метод се използва за обработка на HTTP GET заявки. В него можете да определите логиката, която се изпълнява при получаване на GET заявка към даден URL.
