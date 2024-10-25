@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Display paragraph: If there are no plants yet-->
+    {% if plants %}
+        <section id="catalogue">
+            {% for plant in plants %}
+                <div class="plant-card">
+                    <div class="image-wrap">
+                        <!-- plant image -->
+                        <img src="{{ plant.image_url }}" alt="{{ plant.name }}">
+                    </div>
+                    <!-- plant name -->
+                    <h3>{{ plant.name }}</h3>
+                    <!-- plant description -->
+                    <h1>{{ plant.description|slice:":20" }}{% if plant.description|length > 20 %}...{% endif %}</h1>
+                    <div class="details-buttons">
+                        <!-- plant details button -->
+                        <a href="{% url 'plant_details' plant.id %}" class="details-btn">Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p class="no-articles">No plants yet</p>
+    {% endif %}
+{% endblock %}
