@@ -158,7 +158,7 @@
 **5.Databases**
 
   - За Postgres инсталираме ```psycopg2``` за Windows или ```psycopg2-binary``` за MacOS.
-  - Конфигурираме в ```setting.py```
+  - Конфигурираме в ```settings.py```
   - Създаваме база
   - Създаваме модели в ```models.py```
   - ```makemigrations```
