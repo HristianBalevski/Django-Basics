@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+      <main>
+        <!-- Author's Profile Details Section -->
+
+        <section id="details">
+          <div id="details-wrapper">
+            <h2>Author's Profile Details</h2>
+
+            <!-- if the author has provided a profile image link -->
+              {% if profile.image_url %}
+              	<img
+              id="details-img"
+              src="{{ profile.image_url  }}"
+              alt="profile img"
+            />
+              {% else %}
+                  <img
+              id="details-img"
+              src="{% static 'images/default.png' %}"
+              alt="profile img"
+            />
+              {% endif %}
+          
+            <p id="details-title">{{ profile.first_name }} {{ profile.last_name }}</p>
+
+
+            <p id="nutrition">Published Posts: {{ published_posts }}</p>
+
+            <div id="info-wrapper">
+              <div id="details-description">
+
+                <p>Pets Number: {{ profile.pets_number }}</p>
+              
+                  {% if profile.info %}
+                  	<p>{{ profile.info }}</p>
+                  {% endif %} 
+              
+
+                <p>-------------------------------</p>
+
+              {% if published_posts > 0 %}
+              	<p>
+                  Last Updated Post:
+                  <strong>{{ last_post }}</strong>
+                </p>
+              {% else %}
+                  <p>
+                  Last Updated Post:
+                  <strong>N/A</strong>
+                </p>
+              {% endif %}
+                
+              </div>
+
+
+              <div id="action-buttons">
+                <a href="{% url 'author-edit' %}" id="edit-btn">Edit</a>
+                <a href="{% url 'author-delete' %}" id="delete-btn">Delete</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+{% endblock %}
