@@ -1,3 +1,5 @@
+This repository contains all my lecture notes, exercises, and projects developed during the Django module at [SoftUni](https://softuni.bg). It serves as a comprehensive resource covering foundational concepts, practical applications, and best practices in Django, a powerful Python web framework.
+
 [Click here for more infromation about the course](https://softuni.bg/trainings/4713/django-basics-september-2024)
 
 ![Django Basics](https://github.com/user-attachments/assets/5be0e970-454b-4619-85a4-cdc4df63cbbd)
