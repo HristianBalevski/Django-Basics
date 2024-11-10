@@ -228,25 +228,32 @@ This repository contains all my lecture notes, exercises, and projects developed
 
 **1.Какво са url-ите в Django?**
 
-  - Всеки url преставлява път, на който зареждаме дадено view
-  - Django ги проверява последователно за съвпадение
+  - Всеки url преставлява път, на който зареждаме дадено view.
+  - Django ги проверява последователно за съвпадение.
+    
     ```
       urlpatterns = [
         path('index/', index_view),
         path('index/', index_view_2)  # никога няма да видим index_view_2
       ]
-  - В основните urls на проекта ни, трябва да включим тези от всяко наше приложение
-  - Можем да сложим общ prefix, който да седи пред всеки url на даден app
+    ```
+    
+  - В основните urls на проекта ни, трябва да включим тези от всяко наше приложение.
+  - Можем да сложим общ prefix, който да седи пред всеки url на даден app.
+    
     ```
      urlpatterns = [
        path('admin/', admin.site.urls),
        path('departments/', include('departments.urls')),
      ]
+    ```
+    
   - include може да приема списък от paths
 
 **2.Динамични url-и**
 
-  - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id)
+  - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id).
+    
     ```
         path('index/<int:pk> ', index_view),
   - Типове динамични url-и
@@ -256,11 +263,13 @@ This repository contains all my lecture notes, exercises, and projects developed
     - path - "/some/path" - не бихме имали съвпадение в str, защото Django вижда това като отделни пътища
     - [UUID (Universally Unique Identifier)](https://www.uuidgenerator.net/) е 128-битов уникален идентификатор, използван за обозначаване на обекти по уникален начин в рамките на дадена система.
  - re_path
-   - Винаги пишем в raw стринг(стринг, който няма escapes)
-   - В django 2 всеки път е бил с регулярни изрази
+   - Винаги пишем в raw стринг(стринг, който няма escapes).
+   - В django 2 всеки път е бил с регулярни изрази.
+     
      ```
          re_path(r'^article/(?P<year>[0-9]{4})/', view)
          # matches year and saves it in a variable year
+     ```
 
 **3.Views**
 
@@ -278,6 +287,7 @@ This repository contains all my lecture notes, exercises, and projects developed
            return HttpResponse(content="Hi my name is", status=201)
         
  - JsonResponse
+   
    ```
       content = json.dumps({
          "name": "Dido",
