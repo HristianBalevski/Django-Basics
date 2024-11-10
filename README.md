@@ -155,7 +155,7 @@ This repository contains all my lecture notes, exercises, and projects developed
   - Create ```urls.py``` file
   - Register the djagoApp in ```settings.py```
   - Register the urls in the project
-  - ```   python manage.py runserver```
+  - ```python manage.py runserver```
 
 **5.Databases**
 
