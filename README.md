@@ -283,6 +283,7 @@ This repository contains all my lecture notes, exercises, and projects developed
     - Обект, който се грижи за това да се сериализира нашият отговор (да се разбие на пакети и тн.)
     - Можем да му подаваме content (съдържание)
     - Можем да му подадем status_code
+      
         ```
            return HttpResponse(content="Hi my name is", status=201)
         
@@ -302,14 +303,16 @@ This repository contains all my lecture notes, exercises, and projects developed
 **5.Django Shortcuts**
 
   - **render**
-    - Рендерира контекст в html template
+    - Рендерира контекст в html template.
+      
       ```
          return render(request, 'core/index.html', context)  # context is optional
 
   - **redirect**
-    - Пренасочва ни към друг url
-    - Може да бъде permanent
-      - Когато искаме винаги от тази страница да се пренасочва към друга
+    - Пренасочва ни към друг url.
+    - Може да бъде permanent.
+      - Когато искаме винаги от тази страница да се пренасочва към друга.
+        
   ```
    redirect('https://softuni.bg')  # използваме абсолютен url. защото редиректваме към друго приложение
    redirect('my_view_name', pk=10)  # използваме име на view-то, за по-добра абстракция
@@ -319,14 +322,16 @@ This repository contains all my lecture notes, exercises, and projects developed
    - Използва url resolver-a на django, за да намери url отговарящ на view или model (ако в модела има get_absolute_url)
  - get_object_or_404()
  - get_list_or_404()
+   
 ```
 article =  get_object_or_404(Article, pk=article_id)
 ```
 - **reverse**
-  - Получава име на url, търси в регистрираните имена и връща url-а с това име
+  - Получава име на url, търси в регистрираните имена и връща url-а с това име.
 - **reverse_lazy**
-  - Използва се за конфигурация
-  - Зарежда url-а, когато той съществува
+  - Използва се за конфигурация.
+  - Зарежда url-а, когато той съществува.
+    
 ```
    # settings.py
    LOGIN_URL = reverse('index') # throws an error
