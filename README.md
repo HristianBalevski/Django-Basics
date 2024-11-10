@@ -173,21 +173,24 @@ This repository contains all my lecture notes, exercises, and projects developed
   - Трябват ни:
     - Функция, която има един или повече параметри и връща отрговор
       
-     ```
-     def index(request):
-           return HttpResponse("Hello world")
-
-     ```
-    
-    ```
-      HttpResponse("Hello world", headers={
-       "Content-Type": "application/json",
-    })
-
+      
+      ```
+      def index(request):
+            return HttpResponse("Hello world")
+ 
+      ```
+     
+      ```
+        HttpResponse("Hello world", headers={
+         "Content-Type": "application/json",
+      })
+      ```
+      
 **7.urls**
 
   - Създаваме си променлива с име ```urlpatterns``` в app/urls.py
   - В нея задаваме на какъв път, какво view да се изпълни
+    
     ```
        from .views import index
 
@@ -196,6 +199,7 @@ This repository contains all my lecture notes, exercises, and projects developed
        )
 
  - Добавяме си app/urls в project/urls.py
+   
    ```
        urlpatterns = (  
        path('admin/', admin.site.urls),
