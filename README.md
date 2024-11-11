@@ -320,8 +320,9 @@ This repository contains all my lecture notes, exercises, and projects developed
 
  - **resolve_url**
    - Използва url resolver-a на django, за да намери url отговарящ на view или model (ако в модела има get_absolute_url)
- - get_object_or_404() # Връща обект от база данни на Django по дадени критерии, или грешка 404 Not Found, ако обектът не съществува.
- - get_list_or_404() # Връща списък от обекти, отговарящи на дадени критерии, или грешка 404 Not Found, ако списъкът е празен.
+ - ```get_object_or_404()```: Връща обект от база данни на Django по дадени критерии, или грешка 404 Not Found, ако обектът не съществува.
+   
+ - ```get_list_or_404()```: Връща списък от обекти, отговарящи на дадени критерии, или грешка 404 Not Found, ако списъкът е празен.
    
 ```
 article =  get_object_or_404(Article, pk=article_id)
