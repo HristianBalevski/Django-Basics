@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from djangoIntroduction.todo_app.models import Task
+from
 
 
 def index(request):

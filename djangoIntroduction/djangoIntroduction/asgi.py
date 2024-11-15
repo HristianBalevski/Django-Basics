@@ -1,5 +1,5 @@
 """
-ASGI config for djangoIntroduction project.
+ASGI config for 02_Django_Introduction project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoIntroduction.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '02_Django_Introduction.settings')
 
 application = get_asgi_application()
