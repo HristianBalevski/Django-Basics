@@ -155,7 +155,7 @@ This repository contains all my lecture notes, exercises, and projects developed
   - Create ```urls.py``` file
   - Register the djagoApp in ```settings.py```
   - Register the urls in the project
-  - ```   python manage.py runserver```
+  - ```python manage.py runserver```
 
 **5.Databases**
 
@@ -173,21 +173,24 @@ This repository contains all my lecture notes, exercises, and projects developed
   - Трябват ни:
     - Функция, която има един или повече параметри и връща отрговор
       
-     ```
-     def index(request):
-           return HttpResponse("Hello world")
-
-     ```
-    
-    ```
-      HttpResponse("Hello world", headers={
-       "Content-Type": "application/json",
-    })
-
+      
+      ```
+      def index(request):
+            return HttpResponse("Hello world")
+ 
+      ```
+     
+      ```
+        HttpResponse("Hello world", headers={
+         "Content-Type": "application/json",
+      })
+      ```
+      
 **7.urls**
 
   - Създаваме си променлива с име ```urlpatterns``` в app/urls.py
   - В нея задаваме на какъв път, какво view да се изпълни
+    
     ```
        from .views import index
 
@@ -196,6 +199,7 @@ This repository contains all my lecture notes, exercises, and projects developed
        )
 
  - Добавяме си app/urls в project/urls.py
+   
    ```
        urlpatterns = (  
        path('admin/', admin.site.urls),
@@ -224,25 +228,32 @@ This repository contains all my lecture notes, exercises, and projects developed
 
 **1.Какво са url-ите в Django?**
 
-  - Всеки url преставлява път, на който зареждаме дадено view
-  - Django ги проверява последователно за съвпадение
+  - Всеки url преставлява път, на който зареждаме дадено view.
+  - Django ги проверява последователно за съвпадение.
+    
     ```
       urlpatterns = [
         path('index/', index_view),
         path('index/', index_view_2)  # никога няма да видим index_view_2
       ]
-  - В основните urls на проекта ни, трябва да включим тези от всяко наше приложение
-  - Можем да сложим общ prefix, който да седи пред всеки url на даден app
+    ```
+    
+  - В основните urls на проекта ни, трябва да включим тези от всяко наше приложение.
+  - Можем да сложим общ prefix, който да седи пред всеки url на даден app.
+    
     ```
      urlpatterns = [
        path('admin/', admin.site.urls),
        path('departments/', include('departments.urls')),
      ]
+    ```
+    
   - include може да приема списък от paths
 
 **2.Динамични url-и**
 
-  - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id)
+  - Понякога искаме в url-a да има динамична стойност (променяща се, примерно id).
+    
     ```
         path('index/<int:pk> ', index_view),
   - Типове динамични url-и
@@ -252,11 +263,13 @@ This repository contains all my lecture notes, exercises, and projects developed
     - path - "/some/path" - не бихме имали съвпадение в str, защото Django вижда това като отделни пътища
     - [UUID (Universally Unique Identifier)](https://www.uuidgenerator.net/) е 128-битов уникален идентификатор, използван за обозначаване на обекти по уникален начин в рамките на дадена система.
  - re_path
-   - Винаги пишем в raw стринг(стринг, който няма escapes)
-   - В django 2 всеки път е бил с регулярни изрази
+   - Винаги пишем в raw стринг(стринг, който няма escapes).
+   - В django 2 всеки път е бил с регулярни изрази.
+     
      ```
          re_path(r'^article/(?P<year>[0-9]{4})/', view)
          # matches year and saves it in a variable year
+     ```
 
 **3.Views**
 
@@ -270,10 +283,12 @@ This repository contains all my lecture notes, exercises, and projects developed
     - Обект, който се грижи за това да се сериализира нашият отговор (да се разбие на пакети и тн.)
     - Можем да му подаваме content (съдържание)
     - Можем да му подадем status_code
+      
         ```
            return HttpResponse(content="Hi my name is", status=201)
         
  - JsonResponse
+   
    ```
       content = json.dumps({
          "name": "Dido",
@@ -288,14 +303,16 @@ This repository contains all my lecture notes, exercises, and projects developed
 **5.Django Shortcuts**
 
   - **render**
-    - Рендерира контекст в html template
+    - Рендерира контекст в html template.
+      
       ```
          return render(request, 'core/index.html', context)  # context is optional
 
   - **redirect**
-    - Пренасочва ни към друг url
-    - Може да бъде permanent
-      - Когато искаме винаги от тази страница да се пренасочва към друга
+    - Пренасочва ни към друг url.
+    - Може да бъде permanent.
+      - Когато искаме винаги от тази страница да се пренасочва към друга.
+        
   ```
    redirect('https://softuni.bg')  # използваме абсолютен url. защото редиректваме към друго приложение
    redirect('my_view_name', pk=10)  # използваме име на view-то, за по-добра абстракция
@@ -303,16 +320,19 @@ This repository contains all my lecture notes, exercises, and projects developed
 
  - **resolve_url**
    - Използва url resolver-a на django, за да намери url отговарящ на view или model (ако в модела има get_absolute_url)
- - get_object_or_404()
- - get_list_or_404()
+ - ```get_object_or_404()```: Връща обект от база данни на Django по дадени критерии, или грешка 404 Not Found, ако обектът не съществува.
+   
+ - ```get_list_or_404()```: Връща списък от обекти, отговарящи на дадени критерии, или грешка 404 Not Found, ако списъкът е празен.
+   
 ```
 article =  get_object_or_404(Article, pk=article_id)
 ```
 - **reverse**
-  - Получава име на url, търси в регистрираните имена и връща url-а с това име
+  - Получава име на url, търси в регистрираните имена и връща url-а с това име.
 - **reverse_lazy**
-  - Използва се за конфигурация
-  - Зарежда url-а, когато той съществува
+  - Използва се за конфигурация.
+  - Зарежда url-а, когато той съществува.
+    
 ```
    # settings.py
    LOGIN_URL = reverse('index') # throws an error
