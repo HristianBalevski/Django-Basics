@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+{% with first_name='Tobias' %}
+<h1>Hello {{ first_name }}, how are you?</h1>
+{% endwith %}
+
+<p>In views.py you can see how to create variable.</p>
+
+<ul>
+    {% for member in my_members %}
+        <li>{{ member.first_name }}</li>
+    {% endfor %}
+</ul>
+    <p>In the template.html you can see how to use the variable.</p>
+
+{% for member in my_members %}
+    <h1>{{ member.id }}</h1>
+    <p>{{ member.first_name }} {{ member.last_name }}</p>
+{% endfor %}
+
+{% for member in my_members reversed %}
+    <h1>{{ member.id }}</h1>
+    <p>{{ member.first_name }} {{ member.last_name }}</p>
+{% endfor %}
+
+<ul>
+  {% for x in emptytestobject %}
+    <li>{{ x.firstname }}</li>
+  {% empty %}
+    <li>No members</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in myobject %}
+    <li>{{ x.firstname }}</li>
+  {% empty %}
+    <li>No members</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in my_members %}
+    <li>{{ forloop.counter0 }}</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in my_members %}
+    <li
+      {% if forloop.first %}
+        style='background-color:lightblue;'
+      {% endif %}
+    >{{ x }}</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in my_members %}
+    <li
+      {% if forloop.last %}
+        style='background-color:lightblue;'
+      {% endif %}
+    >{{ x }}</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in my_members %}
+    <li>{{ forloop.revcounter }}</li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for x in my_members %}
+    <li>{{ forloop.revcounter0 }}</li>
+  {% endfor %}
+</ul>
+
+<h1>Welcome Everyone</h1>
+{% comment %}
+  <h1>Welcome ladies and gentlemen</h1>
+{% endcomment %}
+
+<h1>Welcome Everyone</h1>
+{% comment "this was the original welcome message" %}
+    <h1>Welcome ladies and gentlemen</h1>
+{% endcomment %}
+
+{% include "mymenu.html" with me="TOBIAS" sponsor="W3SCHOOLS" %}
+
+<h1>Welcome{# Everyone#}</h1>
+
+<h1>Hello</h1>
+
+<p>This page contains a footer in a template.</p>
+
+{% include 'footer.html' %}
+
+<table border='1'>
+  <tr>
+    <th>ID</th>
+    <th>Firstname</th>
+    <th>Lastname</th>
+      <th>Phone</th>
+      <th>Joined Date</th>
+  </tr>
+  {% for x in my_members %}
+    <tr>
+      <td>{{ x.id }}</td>
+        <td>{{ x.first_name }}</td>
+      <td>{{ x.last_name }}</td>
+    <td>{{ x.phone }}</td>
+    <td>{{ x.joined_date }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<p>In views.py you can see how to import and fetch members from the database.</p>
+</body>
+</html>
